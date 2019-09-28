@@ -1,112 +1,163 @@
 from graphics import *
 
-win = GraphWin("Home2D", 1000, 1000)
+"""
+    Солнце
+    x, y - координаты центра
+    radius - радиус
+    color - цвет двери
+    size - масштаб
+    """
+def Draw_Sun(x, y, radius, color, size = 1):
+    obj = Circle(Point(x, y), radius * size)
+    obj.setFill(color)
+    obj.draw(win)
+    """
+    Крыша
+    x, y - координаты левого верхнего угла стены
+    size - масштаб
+    roof_color - цвет крыши
+    win_color - цвет окон
+    """
+def Draw_Roof(x, y, size, roof_color, win_color):
+    w = 174*size #ширина потолка
+    h = 99*size #высота крыши
+    obj = Polygon(Point(x - 34*size, y), Point( (x + w/2), y-h) , Point(x + w + 34*size, y))
+    obj.setFill(roof_color)
+    obj.draw(win)
+    obj = Polygon(Point(x, y), Point( (x + w/2), y-h) , Point(x + w, y))
+    obj.draw(win)
+    obj.setFill(roof_color)
+    Draw_Window1(x + w/3, y - 27*size, 14*size, size, win_color)
+    Draw_Window1(x + w/3*2, y - 27*size, 14*size, size, win_color)
+    """
+    Круглое окно на крыше
+    x, y - координаты центра окна
+    radius - радиус
+    size - масштаб
+    color - цвет окна
+    draw_line - рисовать ли рамы
+    """
+def Draw_Window1(x, y, radius, size, color, draw_line = True):
+    obj = Circle(Point(x, y), radius)
+    obj.setFill(color)
+    obj.draw(win)
+    if draw_line:
+        line1 = Line(Point(x - radius*2/2, y), Point(x + radius*2/2, y))
+        line2 = Line(Point(x, y - radius*2/2), Point(x, y + radius*2/2))
+        line1.draw(win)
+        line2.draw(win)
+    """
+    Прямоугольное окно
+    x, y - координаты верхнего левого угла окна
+    w, h - ширина и высота
+    color - цвет окна
+    draw_line - рисовать ли рамы
+    """
+def Draw_Window2(x, y, w, h, color, draw_line = True):
+    obj = Rectangle(Point(x, y), Point(x + w, y + h))
+    obj.setFill(color)
+    obj.draw(win)
+    if draw_line:
+        line1 = Line(Point(x + w/2, y), Point(x + w/2, y + h))
+        line1.draw(win)
+        line1 = Line(Point(x + w/2, y + h/4), Point(x + w, y + h/4))
+        line1.draw(win)
+    """
+    Дверь
+    x, y - координаты верхнего левого угла
+    size - масштаб
+    color - цвет двери
+    handlePos - местоположение ручки
+    """
+def Draw_Door(x, y, size, color, handlePos = "Right"):
+    w = 32*size #ширина
+    h = 66*size #высота 
+    obj = Rectangle(Point(x, y), Point(x + w, y + h))
+    obj.setFill(color)
+    obj.draw(win)
+    if (handlePos == "Right"):
+        h = Circle(Point(x + w - 5*size, y + h/2), 2*size)
+        h.setFill("#008000")
+    else:
+        h = Circle(Point(x + 5*size, y + h/2), 2*size)
+        h.setFill("#008000")
+    h.draw(win)        
+    """
+    Дом
+    x, y - координаты верхнего левого угла стены
+    size - масштаб
+    house_color  - цвет дома
+    roof_color  - цвет крыши
+    win1_color  - цвет окон на крыше
+    win2_color  - цвет окон в доме
+    handlePos - местоположение ручки
+    """
+def Draw_House(x, y, size, house_color, roof_color, win1_color, win2_color):
+    w = 174*size #ширина
+    h = 136*size #высота
+    obj = Rectangle(Point(x, y), Point(x + w, y + h))
+    obj.setFill(house_color)
+    obj.draw(win)
+    Draw_Roof(x, y, size, roof_color, win1_color)
+    Draw_Window2(x + 21*size, y + 18*size, 61*size, 31*size, win2_color,0 )
+    Draw_Window2(x + 112*size, y + 18*size, 43*size, 19*size, win2_color,0 )
+    Draw_Window2(x + 21*size, y + 68*size, 62*size, 48*size, win2_color,1 )
+    Draw_Door(x + 118*size, y + 68*size, size, "#ff8040", "Right")
+    """
+    Облако
+    x, y - координаты центра
+    h, w - высота, ширина
+    color - цвет
+    size - масштаб
+    """
+def Draw_Cloud(x, y, h, w, color, size = 1):
+    obj = Oval(Point(x - w/2*size, y - h/2*size ), Point(x + w/2*size, y + h/2*size))
+    obj.setFill(color)
+    obj.draw(win)
+    """
+    Дерево
+    x, y - координаты верхнего левого угла ствола
+    radius - радиус кроны
+    size - масштаб
+    """
+def Draw_Tree(x, y, radius, size = 1):
+    obj = Rectangle(Point(x, y), Point(x + 20*size, y + 130*size))
+    obj.setFill("brown")
+    obj.draw(win)
+    obj = Circle(Point(x + 10*size, y), radius * size)
+    obj.setFill("green")
+    obj.draw(win)
+    """
+    Ребенок
+    x, y - координаты центра головы
+    size - масштаб
+    """
+def Draw_Child(x, y, size = 1):
+    obj = Circle(Point(x, y), 20*size)
+    obj.setFill("white")
+    obj.draw(win)
+    obj = Polygon(Point(x, y + 20*size), Point(x - 40*size, y + 80*size), Point(x + 40*size, y + 80*size))
+    obj.setFill("red")
+    obj.draw(win)
+    obj = Line(Point(x, y + 20*size), Point(x + 40*size, y + 60*size))
+    obj.draw(win)
+    obj = Line(Point(x, y + 20*size), Point(x - 40*size, y + 60*size))
+    obj.draw(win)
+    obj = Line(Point(x - 10*size, y + 80*size), Point(x - 10*size, y + 110*size))
+    obj.draw(win)
+    obj = Line(Point(x + 10*size, y + 80*size), Point(x + 10*size, y + 110*size))
+    obj.draw(win)
 
-def paint all
 
-
-
-c1 = Circle(Point(568, 68), 32)
-c1.setFill("#ffff00")
-
-
-
-
-
-r1 = Rectangle(Point(247, 200), Point(421, 336))
-r1.setFill("#804000")
-r2 = Rectangle(Point(268, 218), Point(329, 249))
-r2.setFill("#0080ff")
-r3 = Rectangle(Point(359, 218), Point(402, 237))
-r3.setFill("#0080ff")
-r4 = Rectangle(Point(268, 268), Point(330, 316))
-r4.setFill("#0080ff")
-l1 = Line(Point(299, 268), Point(299, 316))
-l2 = Line(Point(299, 281), Point(330, 281))
-r5 = Rectangle(Point(365, 268), Point(397, 336))
-r5.setFill("#ff8040")
-c2 = Circle(Point(392, 303), 2)
-c2.setFill("#008000")
-p1 = Polygon(Point(213, 200), Point(331, 101), Point(454, 200))
-p1.setFill("#008080")
-p2 = Polygon(Point(247, 200), Point(331, 101), Point(420, 200))
-c3 = Circle(Point(308, 173), 14)
-c3.setFill("#00ffff")
-c4 = Circle(Point(357, 173), 14)
-c4.setFill("#00ffff")
-l3 = Line(Point(294, 173), Point(322, 173))
-l4 = Line(Point(357, 159), Point(357, 187))
-l5 = Line(Point(308, 159), Point(308, 187))
-l6 = Line(Point(343, 173), Point(371, 173))
-
-
-
-r11 =Rectangle(Point(100, 100), Point(187, 168))
-r11.setFill("#804000")
-r21 = Rectangle(Point(110.5, 109), Point(141,124.5))
-r21.setFill("#0080ff")
-r31 = Rectangle(Point(156, 109), Point(177.5,118.5 ))
-r31.setFill("#0080ff")
-r41 = Rectangle(Point(268, 268), Point(330, 316))
-r41.setFill("#0080ff")
-l11 = Line(Point(299, 268), Point(299, 316))
-l21 = Line(Point(299, 281), Point(330, 281))
-r51 = Rectangle(Point(365, 268), Point(397, 336))
-r51.setFill("#ff8040")
-c21 = Circle(Point(392, 303), 2)
-c21.setFill("#008000")
-p11 = Polygon(Point(213, 200), Point(331, 101), Point(454, 200))
-p11.setFill("#008080")
-p21 = Polygon(Point(247, 200), Point(331, 101), Point(420, 200))
-c31 = Circle(Point(308, 173), 14)
-c31.setFill("#00ffff")
-c41= Circle(Point(357, 173), 14)
-c41.setFill("#00ffff")
-l31 = Line(Point(294, 173), Point(322, 173))
-l41 = Line(Point(357, 159), Point(357, 187))
-l51 = Line(Point(308, 159), Point(308, 187))
-l61= Line(Point(343, 173), Point(371, 173))
-
-
-
-
-
-
-c1.draw(win)
-r1.draw(win)
-r2.draw(win)
-r3.draw(win)
-r4.draw(win)
-l1.draw(win)
-l2.draw(win)
-r5.draw(win)
-c2.draw(win)
-p1.draw(win)
-p2.draw(win)
-c3.draw(win)
-c4.draw(win)
-l3.draw(win)
-l4.draw(win)
-l5.draw(win)
-l6.draw(win)
-
-
-r11.draw(win)
-r21.draw(win)
-r31.draw(win)
-r41.draw(win)
-l11.draw(win)
-l21.draw(win)
-r51.draw(win)
-c21.draw(win)
-p11.draw(win)
-p21.draw(win)
-c31.draw(win)
-c41.draw(win)
-l31.draw(win)
-l41.draw(win)
-l51.draw(win)
-l61.draw(win)
+win = GraphWin("Home2D", 800, 600)
+Draw_Cloud(200, 50, 20, 50, "lightblue",1)
+Draw_Cloud(300, 50, 20, 50, "lightblue", 2)
+Draw_Sun(568, 68, 32, "#ffff00", 1.5)
+Draw_House(247, 200, 1, "#804000", "#008080", "#00ffff", "#0080ff")
+Draw_Tree(600, 200, 50, 1.5)
+Draw_Child(100, 300, 1)
 
 win.getMouse()
 win.close()
+
+
