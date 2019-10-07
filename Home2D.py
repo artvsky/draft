@@ -1,5 +1,5 @@
 from graphics import *
-
+import math 
 """
     Солнце
     x, y - координаты центра
@@ -150,14 +150,66 @@ def Draw_Child(x, y, size = 1):
 
 
 win = GraphWin("Home2D", 800, 600)
-Draw_Cloud(200, 50, 20, 50, "lightblue",1)
-Draw_Cloud(300, 50, 20, 50, "lightblue", 2)
-Draw_Sun(568, 68, 32, "#ffff00", 1.5)
-Draw_House(247, 200, 1, "#804000", "#008080", "#00ffff", "#0080ff")
-Draw_Tree(600, 200, 50, 1.5)
-Draw_Child(100, 300, 1)
 
-win.getMouse()
+size1 = 1
+size2 = 0.5
+
+x1 = 247
+y1 = 200
+dx1 = 30
+dy1 = 20
+
+x2 = 50
+y2 = 50
+dx2 = 30
+dy2 = 10
+
+w="#804000"
+t="red"
+while True:
+    r = Rectangle(Point(0,0), Point(800, 600))
+    r.setFill("blue")
+    r.draw(win)
+    Draw_Cloud(200, 50, 20, 50, "lightblue",1)
+    Draw_Cloud(300, 50, 20, 50, "lightblue", 2)
+    Draw_Sun(568, 68, 32, "#ffff00", 1.5)
+    Draw_Tree(600, 200, 50, 1.5)
+    Draw_Child(100, 300, 1)
+    time.sleep(0.01)
+    
+    x1+=dx1
+    y1+=dy1
+
+    x2+=dx2
+    y2+=dy2
+    
+    if y1 >= 600 - 136*size1 or y1 <= 99*size1:
+        dy1*=-1
+        w,t=t,w
+        
+    if x1 >= 800 - (174+34)*size1 or x1 <= 34*size1:
+        dx1*=-1
+        w,t=t,w
+
+    if y2 >= 600 - 136*size2 or y2 <= 99*size2:
+        dy2*=-1
+        w,t=t,w
+    if x2 >= 800 - (174+34)*size2 or x2 <=34*size1:
+        dx2*=-1
+        w,t=t,w
+    if (math.fabs( y2 + 18.5*size2 - (y1 + 18.5*size1) ) <= math.fabs(235*size1/2 + 235*size2/2 )) and (math.fabs(x2 + 174/2*size2 - (x1 + 174/2*size1)) <= math.fabs(174/2*size1 + 174/2*size2)) : 
+        dy2*=-1
+        dy1*=-1
+        dx2*=-1
+        dx1*=-1
+        w,t=t,w
+        
+    Draw_House(x1, y1, size1, w , "#008080", "#00ffff", "#0080ff")
+    Draw_House(x2, y2, size2,t , "#008080", "#00ffff", "#0080ff")       
+        
+    
+    
+win.getMouse()    
 win.close()
 
 
